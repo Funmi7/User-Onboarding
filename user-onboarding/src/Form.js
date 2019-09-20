@@ -1,8 +1,14 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-function UserForm() {
+
+
+function UserForm(props) {
+    const {onSubmit, initialUserForm} = props;
+    return (
   <Formik 
+    onSubmit={onSubmit}
+    initialValues={initialUserForm}
     render={props => {
       return (
         <Form>
@@ -27,18 +33,19 @@ function UserForm() {
               <ErrorMessage name='password' component='div'/>
             </label>
           </div>
-          <div>
+          {/* <div>
             <label>
               Terms of Service
               <Field name='terms-of-service' type='checkbox' placeholder='TermsOfService'/>
               <ErrorMessage name='terms-of-servie' component='div'/>
             </label>
-          </div>
+          </div> */}
           <button type='submit'>Submit</button>
         </Form>
     )
 }} 
 />
+    )
 }
 
 export default UserForm;
