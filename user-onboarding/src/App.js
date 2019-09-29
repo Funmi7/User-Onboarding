@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import UserForm from './Form';
 import axios from 'axios';
+import {Formik} from 'formik';
+import Users from './UsersList';
 
 
 const usersAPI = 'https://reqres.in/api/users';
@@ -9,8 +11,8 @@ const usersAPI = 'https://reqres.in/api/users';
 const initialUserForm = {
   name: "",
   email: "",
-  password: ""
-  // checkbox: ''
+  password: "",
+  checkbox: false
 };
 
 
@@ -19,23 +21,12 @@ function App() {
   const [serverError, setServerError] = useState('');
   const [user, setUser] = useState(initialUserForm);
 
-  const fetchUsers = () => {
-    axios.get(usersAPI)
-    .then(res => {
-      setUsersList(res.data)
-      console.log(res.data);
-    })
-    .catch(error => {
-      setServerError(error.message)
-    });
-  }
-
   const addUser = (formValues, actions) => {
     const userToPost = {
       name: formValues.name,
       email: formValues.email,
       password: formValues.password,
-      // checkbox: formValues.checkbox
+      checkbox: formValues.checkbox
     };
     setUser(userToPost);
 
@@ -52,28 +43,13 @@ function App() {
     });
   }
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
   return (
     <div className="App">
       <UserForm 
       initialUserForm={initialUserForm}
       onSubmit={addUser}
       />
-      {
-    usersList.length 
-    ? usersList.map(user => (
-        <div key={user.id}>
-          <h5>Your email is {user.name} and your password is
-          {user.email}
-          {user.password}</h5>
-          {/* {user.checkbox} */}
-        </div> 
-      ))
-       : <div>Add a User!</div>
-      }
+      <Users usersList={usersList} />
     </div>
   );
 }
